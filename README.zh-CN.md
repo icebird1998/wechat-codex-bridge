@@ -5,6 +5,7 @@
 这个项目是一个组合式二次开发版本，代码中包含并改造了其他优秀开源项目的部分能力。公开使用时请一并保留原项目版权与许可说明。
 
 - 感谢 [zhayujie/chatgpt-on-wechat](https://github.com/zhayujie/chatgpt-on-wechat)：本项目的微信、QQ、Web 通道、消息上下文、插件体系等主要入口能力基于该项目扩展。
+- 特别感谢我的师兄 Wei Zhu 博士：在项目设计、运行稳定性和实际部署流程上给予了重要指导，并推动增加了线程终止自动重启、常驻守护等可靠性能力。
 - 感谢 [OpenAI Codex SDK](https://www.npmjs.com/package/@openai/codex-sdk)：`codexbridge` 通过该 SDK 调用 Codex thread/run 能力。
 - 感谢 [Express](https://github.com/expressjs/express)：`codexbridge` 的 HTTP 服务基于 Express。
 - 感谢 [xterm.js](https://github.com/xtermjs/xterm.js)：Web 控制台的终端/过程展示使用了 xterm.js。
@@ -12,29 +13,29 @@
 
 再次感谢以上项目和作者。没有这些基础工作，V1 不可能这么快成型。
 
-把 Codex 接到微信、QQ 和网页控制台里的本地桥接套件。V1 版本包含两个核心服务：
+把 Codex 接到微信、QQ、飞书、钉钉、企业微信、公众号和网页控制台里的本地桥接套件。V1 版本包含两个核心服务：
 
 - `codexbridge`：OpenAI Chat Completions 兼容接口，负责调用 Codex SDK、管理会话、运行时配置、异步审批队列和 CLI 过程流。
-- `chatgpt-on-wechat`：聊天入口层，负责微信/QQ/Web 等通道、文件上传、网页控制台和消息回传。
+- `chatgpt-on-wechat`：聊天入口层，负责微信、QQ、飞书、钉钉、企业微信、公众号、Web 等通道、文件上传、网页控制台和消息回传。
 
 默认部署面向 Windows 本机常驻运行。公开部署前请务必改掉所有默认密钥，并优先只监听 `127.0.0.1`。
 
 ## 功能
 
-- 微信、QQ、Web 控制台接入 Codex。
+- 微信、QQ、飞书机器人、钉钉机器人、企业微信、公众号、Web 控制台等多通道接入 Codex。
 - 兼容 OpenAI `/v1/chat/completions` 请求格式。
 - 支持稳定会话：同一用户消息会复用同一个 Codex thread。
 - 支持模型、推理强度、沙箱、联网、Web search 的运行时查看和调整。
 - 支持高风险任务异步审批：微信里收到审批请求后，可回复“同意/拒绝”继续处理。
 - Web 控制台提供 Codex CLI 过程监控。
-- 支持开机常驻脚本和服务状态检查脚本。
+- 支持线程/进程异常终止后的自动重启、开机常驻脚本和服务状态检查脚本。
 
 ## 目录
 
 ```text
 wechat-codex-bridge/
   codexbridge/          # Codex OpenAI-compatible bridge
-  chatgpt-on-wechat/    # 微信/QQ/Web 通道入口
+  chatgpt-on-wechat/    # 微信/QQ/飞书/钉钉/企业微信/Web 等通道入口
   scripts/              # Windows 常驻、审批、启动/停止脚本
   README.zh-CN.md       # 中文使用说明
 ```
@@ -137,13 +138,18 @@ python app.py
 http://127.0.0.1:9899/chat
 ```
 
-## 微信/QQ 使用方式
+## 多通道使用方式
 
 `channel_type` 控制通道：
 
 - `web`：网页聊天控制台。
 - `qq`：QQ 通道。
 - `weixin`：个人微信 ilink bot 通道。
+- `feishu`：飞书机器人通道。
+- `dingtalk`：钉钉机器人通道。
+- `wecom_bot`：企业微信机器人通道。
+- `wechatmp` / `wechatmp_service`：微信公众号通道。
+- `wechatcom_app`：企业微信自建应用通道。
 
 示例：
 
