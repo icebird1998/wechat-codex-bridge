@@ -7,6 +7,7 @@
 本项目是组合式二次开发版本，包含并改造了其他优秀开源项目的部分能力：
 
 - 感谢 [zhayujie/chatgpt-on-wechat](https://github.com/zhayujie/chatgpt-on-wechat)：微信、QQ、Web 通道与消息入口能力基于该项目扩展。
+- 感谢 [begonia599/CodexBridge](https://github.com/begonia599/CodexBridge)：`codexbridge` 服务基于该项目扩展，承担 OpenAI 兼容接口、Codex 调用和运行时配置能力。
 - 特别感谢我的师兄 Wei Zhu 博士：对项目设计、部署稳定性和可靠性能力给予指导，并推动增加了线程终止自动重启、常驻守护等功能。
 - 感谢 [OpenAI Codex SDK](https://www.npmjs.com/package/@openai/codex-sdk)：`codexbridge` 通过该 SDK 调用 Codex。
 - 感谢 [Express](https://github.com/expressjs/express) 和 [xterm.js](https://github.com/xtermjs/xterm.js) 等依赖项目。
