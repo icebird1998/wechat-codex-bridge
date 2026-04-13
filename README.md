@@ -15,6 +15,8 @@
 
 完整安装、配置、常驻运行和审批说明请看：[README.zh-CN.md](README.zh-CN.md)。
 
+README 里也提供了一段可直接复制给 Codex 的自动安装提示词，适合让 Codex 根据仓库地址完成本机部署。
+
 ## 一句话启动
 
 1. 启动 `codexbridge`，提供 OpenAI 兼容接口。

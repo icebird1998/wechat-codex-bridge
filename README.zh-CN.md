@@ -51,6 +51,28 @@ wechat-codex-bridge/
 
 ## 快速开始
 
+### 让 Codex 自动安装
+
+如果你已经在本机安装并登录了 Codex CLI，也可以直接把安装工作交给 Codex。复制下面这段提示词给 Codex，它会根据项目地址自动克隆、安装依赖、生成配置模板，并尽量完成本机可运行部署。
+
+```text
+请帮我在 Windows 本机自动安装并配置这个项目：
+https://github.com/icebird1998/wechat-codex-bridge
+
+要求：
+1. 克隆到 C:\wechat-codex-bridge，如果目录已存在，请先检查现有文件，不要覆盖我的私有配置和运行数据。
+2. 安装 codexbridge 的 Node.js 依赖，复制 .env.example 为 .env，并提示我设置 CODEX_BRIDGE_API_KEY、CODEX_WORKDIR、模型、沙箱、联网和审批配置。
+3. 安装 chatgpt-on-wechat 的 Python 依赖，创建虚拟环境，复制 config-template.json 为 config.json，并把 open_ai_api_base 指向 http://127.0.0.1:8080/v1。
+4. 生成一个适合本机的最小可用配置，默认 web_host=127.0.0.1，web_terminal_enabled=false，不要把服务暴露到公网。
+5. 创建或检查 C:\wechat-codex-bridge\code_project 作为 Codex 工作目录。
+6. 运行基础验证：node --check codexbridge\server.js，python -m py_compile 关键 Python 文件，并检查 .env/config.json 没有占位错误。
+7. 告诉我如何分别启动 CodexBridge 和聊天入口，以及如何打开 Web 控制台。
+8. 如果我要求常驻运行，再帮我执行 scripts\register-resident-services.ps1；在我确认前不要注册开机启动。
+9. 全程不要打印或上传我的 token、API key、微信凭证、日志和 approvals 运行数据。
+
+完成后请给我一个简短报告：安装路径、启动命令、Web 控制台地址、还需要我手动填写的配置项。
+```
+
 ### 1. 克隆项目
 
 ```powershell
