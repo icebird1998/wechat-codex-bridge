@@ -1,0 +1,3 @@
+$workspace = "C:\wechat-codex-bridge"
+$scripts = @((Join-Path $workspace "scripts\supervise-codexbridge.ps1"),(Join-Path $workspace "scripts\supervise-cowagent.ps1"),(Join-Path $workspace "scripts\watch-resident-services.ps1"))
+foreach ($script in $scripts) { Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "-NoProfile","-WindowStyle","Hidden","-ExecutionPolicy","Bypass","-File","`"$script`"" -WorkingDirectory $workspace -WindowStyle Hidden | Out-Null }

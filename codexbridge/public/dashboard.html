@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CodexBridge 仪表盘</title>
+    <link rel="icon" type="image/jpeg" href="/public/favicon.jpg" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: url("/public/background.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        padding: 24px;
+        color: #1f2933;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .panel {
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4),
+          0 25px 50px rgba(15, 23, 42, 0.2),
+          0 10px 25px rgba(15, 23, 42, 0.1);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        padding: 28px;
+        margin-bottom: 24px;
+      }
+      .header h1 {
+        font-size: 32px;
+        margin-bottom: 12px;
+      }
+      .header p {
+        color: #475569;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 20px;
+      }
+      .stat-card {
+        padding: 22px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.25);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5),
+          0 15px 35px rgba(15, 23, 42, 0.15),
+          0 5px 15px rgba(15, 23, 42, 0.08);
+        backdrop-filter: blur(24px) saturate(180%);
+        -webkit-backdrop-filter: blur(24px) saturate(180%);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6),
+          0 20px 40px rgba(15, 23, 42, 0.2),
+          0 8px 20px rgba(15, 23, 42, 0.12);
+      }
+      .stat-card span {
+        display: block;
+        font-size: 13px;
+        color: #94a3b8;
+        margin-bottom: 6px;
+        letter-spacing: 0.08em;
+      }
+      .stat-card strong {
+        font-size: 34px;
+        color: #0f172a;
+      }
+      .token-card {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        padding: 18px;
+        margin-bottom: 16px;
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4),
+          0 20px 35px rgba(15, 23, 42, 0.2),
+          0 8px 16px rgba(15, 23, 42, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .token-card:hover {
+        transform: translateY(-2px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5),
+          0 25px 45px rgba(15, 23, 42, 0.25),
+          0 10px 20px rgba(15, 23, 42, 0.15);
+      }
+      .token-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+      .badge {
+        padding: 4px 10px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .badge-success {
+        background: rgba(220, 252, 231, 0.9);
+        color: #166534;
+      }
+      .badge-danger {
+        background: rgba(254, 226, 226, 0.9);
+        color: #991b1b;
+      }
+      .token-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+      .token-info span {
+        font-size: 12px;
+        color: #94a3b8;
+      }
+      .token-info strong {
+        display: block;
+        color: #0f172a;
+        font-size: 15px;
+      }
+      .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 14px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        backdrop-filter: blur(10px);
+      }
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.15);
+      }
+      .btn-primary {
+        background: rgba(99, 102, 241, 0.9);
+        color: #fff;
+      }
+      .empty {
+        padding: 18px;
+        border-radius: 12px;
+        border: 1px dashed rgba(99, 102, 241, 0.6);
+        color: #475569;
+        text-align: center;
+        background: rgba(248, 250, 255, 0.7);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <section class="panel glass header">
+        <h1>CodexBridge 仪表盘</h1>
+        <p>监控 Codex 登录状态、请求量、会话活动以及桥接运行状况。</p>
+        <div class="actions">
+          <button class="btn-primary" id="refresh-btn">刷新数据</button>
+        </div>
+      </section>
+
+      <section class="panel glass stats" id="stat-grid">
+        <div class="stat-card">
+          <span>总请求数</span>
+          <strong id="stat-requests">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>活跃会话</span>
+          <strong id="stat-sessions">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>运行时长（分钟）</span>
+          <strong id="stat-uptime">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>沙箱模式</span>
+          <strong id="stat-sandbox">-</strong>
+        </div>
+      </section>
+
+      <section class="panel glass account-section">
+        <h2>账号</h2>
+        <div id="account-card" class="token-card">
+          <div class="token-header">
+            <div><div class="badge badge-danger">未连接</div></div>
+            <small id="account-source">auth.json not found</small>
+          </div>
+          <div class="token-info" id="account-info"></div>
+        </div>
+      </section>
+
+      <section class="panel glass token-section">
+        <h2>令牌</h2>
+        <div id="token-list" class="token-list">
+          <div class="empty">暂无令牌信息，请先通过 CLI 登录 Codex。</div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      const API_BASE = window.location.origin;
+      const elements = {
+        requests: document.getElementById("stat-requests"),
+        sessions: document.getElementById("stat-sessions"),
+        uptime: document.getElementById("stat-uptime"),
+        sandbox: document.getElementById("stat-sandbox"),
+        accountCard: document.getElementById("account-card"),
+        accountInfo: document.getElementById("account-info"),
+        accountSource: document.getElementById("account-source"),
+        tokenList: document.getElementById("token-list"),
+        refreshBtn: document.getElementById("refresh-btn"),
+      };
+
+      async function loadDashboard() {
+        elements.refreshBtn.disabled = true;
+        try {
+          const response = await fetch(`${API_BASE}/api/dashboard`, {
+            cache: "no-store",
+          });
+          if (!response.ok) throw new Error("API unreachable");
+          const data = await response.json();
+          renderStats(data.stats);
+          renderAccount(data.account);
+          renderTokens(data.tokens);
+        } catch (error) {
+          console.error(error);
+          elements.tokenList.innerHTML =
+            '<div class="empty">无法加载仪表盘数据，请查看日志。</div>';
+        } finally {
+          elements.refreshBtn.disabled = false;
+        }
+      }
+
+      function renderStats(stats = {}) {
+        elements.requests.textContent = stats.totalRequests ?? 0;
+        elements.sessions.textContent = stats.activeSessions ?? 0;
+        elements.uptime.textContent = stats.uptimeSeconds
+          ? (stats.uptimeSeconds / 60).toFixed(1)
+          : "0";
+        elements.sandbox.textContent = stats.sandboxMode ?? "unknown";
+      }
+
+      function renderAccount(account = {}) {
+        elements.accountSource.textContent = account.source ?? "unknown";
+        const badgeClass =
+          account.status === "active" || account.status === "linked"
+            ? "badge badge-success"
+            : "badge badge-danger";
+        const statusMap = {
+          active: "已连接",
+          linked: "已连接",
+          expired: "已过期",
+          unknown: "未知",
+          missing: "缺少凭证",
+        };
+        const statusText =
+          statusMap[account.status] ??
+          (account.status ? account.status : "未连接");
+        elements.accountCard.querySelector(".badge").className = badgeClass;
+        elements.accountCard.querySelector(".badge").textContent = statusText;
+
+        elements.accountInfo.innerHTML = `
+          <div>
+            <span>邮箱</span>
+            <strong>${account.email ?? "n/a"}</strong>
+          </div>
+          <div>
+            <span>账号 ID</span>
+            <strong>${account.accountId ?? "n/a"}</strong>
+          </div>
+          <div>
+            <span>设备</span>
+            <strong>${account.device ?? "n/a"}</strong>
+          </div>
+          <div>
+            <span>签发时间</span>
+            <strong>${formatDate(account.issuedAt)}</strong>
+          </div>
+          <div>
+            <span>过期时间</span>
+            <strong>${formatDate(account.expiresAt)}</strong>
+          </div>
+        `;
+      }
+
+      function renderTokens(tokens = []) {
+        if (!tokens.length) {
+          elements.tokenList.innerHTML =
+            '<div class="empty">没有令牌元数据。请通过 Codex CLI 登录以同步信息。</div>';
+          return;
+        }
+        elements.tokenList.innerHTML = tokens
+          .map((token) => {
+            const badge =
+              token.status === "expired" ? "badge badge-danger" : "badge badge-success";
+            const badgeText =
+              token.status === "expired"
+                ? "已过期"
+                : token.status === "active"
+                  ? "正常"
+                  : token.status ?? "未知";
+            const label = `${token.type ?? "令牌"}${
+              token.email ? " · " + token.email : ""
+            }`;
+            return `
+            <div class="token-card">
+              <div class="token-header">
+                <div class="token-email">${label}</div>
+                <div class="${badge}">${badgeText}</div>
+              </div>
+              <div class="token-info">
+                <div>
+                  <span>签发时间</span>
+                  <strong>${formatDate(token.issuedAt)}</strong>
+                </div>
+                <div>
+                  <span>过期时间</span>
+                  <strong>${formatDate(token.expiresAt)}</strong>
+                </div>
+                <div>
+                  <span>权限/Scope</span>
+                  <strong>${token.scopes ?? "默认"}</strong>
+                </div>
+                <div>
+                  <span>预览</span>
+                  <strong>${token.preview ?? "n/a"}</strong>
+                </div>
+                ${
+                  token.issuer
+                    ? `<div><span>Issuer</span><strong>${token.issuer}</strong></div>`
+                    : ""
+                }
+                ${
+                  token.audience
+                    ? `<div><span>Audience</span><strong>${token.audience}</strong></div>`
+                    : ""
+                }
+              </div>
+            </div>`;
+          })
+          .join("");
+      }
+
+      function formatDate(value) {
+        if (!value) return "n/a";
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? "n/a" : date.toLocaleString();
+      }
+
+      elements.refreshBtn.addEventListener("click", loadDashboard);
+      loadDashboard();
+    </script>
+  </body>
+</html>

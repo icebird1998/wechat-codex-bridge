@@ -1,0 +1,16 @@
+node_modules/
+.venv/
+codex-data/
+.codex_thread.json
+.codex_threads.json
+.codex/
+.codex/*
+.codex/**/*
+auth.json
+.env
+.env.local
+*.log
+*.tmp
+tmp/
+.resident.*
+approvals/

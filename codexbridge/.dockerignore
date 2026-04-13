@@ -1,0 +1,8 @@
+.git
+node_modules
+npm-debug.log
+codex-bridge.zip
+.codex_threads.json
+.codex_thread.json
+*.log
+codex2api

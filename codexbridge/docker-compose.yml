@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  codexbridge:
+    build: .
+    image: codexbridge:latest
+    container_name: codexbridge
+    ports:
+      - "${PORT:-8080}:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./:/workspace
+      - ./codex-data:/root/.codex
+    working_dir: /workspace
